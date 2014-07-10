@@ -11,4 +11,13 @@
 
 @interface MainViewController : UIViewController
 
+@property (weak, nonatomic) IBOutlet UITextField *nameField;
+@property (weak, nonatomic) IBOutlet UITextField *ageField;
+@property (weak, nonatomic) IBOutlet UILabel *nameText;
+@property (weak, nonatomic) IBOutlet UILabel *ageText;
+
+- (IBAction)saveButton:(id)sender;
+- (IBAction)logoutButton:(id)sender;
+
+
 @end

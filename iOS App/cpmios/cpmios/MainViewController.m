@@ -46,4 +46,13 @@
 }
 */
 
+- (IBAction)saveButton:(id)sender {
+}
+
+- (IBAction)logoutButton:(id)sender {
+    
+    [PFUser logOut];
+    [self.navigationController popViewControllerAnimated:true];
+    
+}
 @end
