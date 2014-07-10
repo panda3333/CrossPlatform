@@ -4,6 +4,7 @@
 //
 //  Created by Brandon Shega on 7/9/14.
 //  Copyright (c) 2014 Brandon Shega. All rights reserved.
+//  Cross-Platform Mobile Development 1407
 //
 
 #import "ViewController.h"
@@ -33,11 +34,14 @@
     
     PFUser *currentUser = [PFUser currentUser];
     
+    //user logged in
     if (currentUser) {
         
+        //if user is logged in then show the main view controller.
         UIViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"MainViewController"];
         [self.navigationController pushViewController:controller animated:true];
-        
+    
+    //user not logged in
     } else {
         // Create the log in view controller
         PFLogInViewController *logInViewController = [[PFLogInViewController alloc] init];
@@ -57,6 +61,7 @@
 
 - (BOOL)logInViewController:(PFLogInViewController *)logInController shouldBeginLogInWithUsername:(NSString *)username password:(NSString *)password
 {
+    //make sure user types something into the fields, if not then display an alert
     if (username && password && username.length != 0 && password.length != 0) {
         return YES;
     }
@@ -71,10 +76,14 @@
 }
 
 - (void)logInViewController:(PFLogInViewController *)logInController didLogInUser:(PFUser *)user {
+    
+    //dismiss login view controller if user logged in.
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 - (void)signUpViewController:(PFSignUpViewController *)signUpController didSignUpUser:(PFUser *)user {
+    
+    //dismiss signup controller if user signed up.
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
