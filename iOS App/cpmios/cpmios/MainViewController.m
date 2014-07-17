@@ -57,9 +57,20 @@
                 
             }
             
-            nameText.text = [userObject objectForKey:@"name"];
-            NSNumber *ageNumber = [userObject objectForKey:@"age"];
-            ageText.text = [ageNumber stringValue];
+            if (userObject != NULL) {
+                
+                nameText.text = [userObject objectForKey:@"name"];
+                NSNumber *ageNumber = [userObject objectForKey:@"age"];
+                ageText.text = [ageNumber stringValue];
+                
+            } else {
+                
+                nameText.text = @"Please type your Name";
+                ageText.text = @"Please type your Age";
+                
+            }
+            
+            
             
         } else {
             NSLog(@"Error: %@", error);
@@ -89,6 +100,7 @@
     NSNumber *age = [NSNumber numberWithInt:ageValue];
     
     //query on viewdidappear looks for object for current user, if found, update that object
+    NSLog(@"%@", userObject);
     if (userObject != NULL) {
         
         userObject[@"name"] = nameString;
@@ -99,25 +111,8 @@
         [ageField resignFirstResponder];
         [nameField resignFirstResponder];
         
-        //refresh the labels with the data that was just saved to the object
-        PFQuery *query = [PFQuery queryWithClassName:@"Object"];
-        [query whereKey:@"user" equalTo:[PFUser currentUser]];
-        
-        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-            if (!error) {
-                
-                for (PFObject *currentObject in objects) {
-                    
-                    nameText.text = [currentObject objectForKey:@"name"];
-                    NSNumber *ageNumber = [currentObject objectForKey:@"age"];
-                    ageText.text = [ageNumber stringValue];
-                    
-                }
-                
-            } else {
-                NSLog(@"Error: %@", error);
-            }
-        }];
+        //refresh the screen
+        [self viewDidAppear:true];
         
     //else create a new object for the current user.
     } else {
@@ -134,25 +129,8 @@
         [ageField resignFirstResponder];
         [nameField resignFirstResponder];
         
-        //refresh the labels with the data that was just saved to the object
-        PFQuery *query = [PFQuery queryWithClassName:@"Object"];
-        [query whereKey:@"user" equalTo:[PFUser currentUser]];
-        
-        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-            if (!error) {
-                
-                for (PFObject *currentObject in objects) {
-                    
-                    nameText.text = [currentObject objectForKey:@"name"];
-                    NSNumber *ageNumber = [currentObject objectForKey:@"age"];
-                    ageText.text = [ageNumber stringValue];
-                    
-                }
-                
-            } else {
-                NSLog(@"Error: %@", error);
-            }
-        }];
+        //refresh the screen
+        [self viewDidAppear:true];
         
     }
     
