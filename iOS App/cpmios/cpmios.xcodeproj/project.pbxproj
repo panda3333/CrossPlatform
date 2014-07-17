@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C568C1D5197771CD007CE149 /* CustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C568C1D4197771CD007CE149 /* CustomCell.m */; };
+		C568C1D819777221007CE149 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C568C1D719777221007CE149 /* TableViewController.m */; };
+		C568C1DB1977781F007CE149 /* AddContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C568C1DA1977781F007CE149 /* AddContactViewController.m */; };
 		C56E79C9196E0E8100018052 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C56E79C8196E0E8100018052 /* Foundation.framework */; };
 		C56E79CB196E0E8100018052 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C56E79CA196E0E8100018052 /* CoreGraphics.framework */; };
 		C56E79CD196E0E8100018052 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C56E79CC196E0E8100018052 /* UIKit.framework */; };
@@ -49,6 +52,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C568C1D3197771CD007CE149 /* CustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCell.h; sourceTree = "<group>"; };
+		C568C1D4197771CD007CE149 /* CustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCell.m; sourceTree = "<group>"; };
+		C568C1D619777221007CE149 /* TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
+		C568C1D719777221007CE149 /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
+		C568C1D91977781F007CE149 /* AddContactViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddContactViewController.h; sourceTree = "<group>"; };
+		C568C1DA1977781F007CE149 /* AddContactViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddContactViewController.m; sourceTree = "<group>"; };
 		C56E79C5196E0E8100018052 /* cpmios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = cpmios.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C56E79C8196E0E8100018052 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C56E79CA196E0E8100018052 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -180,6 +189,12 @@
 				C56E79CF196E0E8100018052 /* Supporting Files */,
 				C56E7A19196E1BB400018052 /* MainViewController.h */,
 				C56E7A1A196E1BB400018052 /* MainViewController.m */,
+				C568C1D3197771CD007CE149 /* CustomCell.h */,
+				C568C1D4197771CD007CE149 /* CustomCell.m */,
+				C568C1D619777221007CE149 /* TableViewController.h */,
+				C568C1D719777221007CE149 /* TableViewController.m */,
+				C568C1D91977781F007CE149 /* AddContactViewController.h */,
+				C568C1DA1977781F007CE149 /* AddContactViewController.m */,
 			);
 			path = cpmios;
 			sourceTree = "<group>";
@@ -310,10 +325,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C568C1DB1977781F007CE149 /* AddContactViewController.m in Sources */,
 				C56E79DF196E0E8100018052 /* ViewController.m in Sources */,
+				C568C1D819777221007CE149 /* TableViewController.m in Sources */,
 				C56E79D9196E0E8100018052 /* AppDelegate.m in Sources */,
 				C56E79D5196E0E8100018052 /* main.m in Sources */,
 				C56E7A1B196E1BB400018052 /* MainViewController.m in Sources */,
+				C568C1D5197771CD007CE149 /* CustomCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -526,6 +544,7 @@
 				C56E79F9196E0E8100018052 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C56E79FA196E0E8100018052 /* Build configuration list for PBXNativeTarget "cpmiosTests" */ = {
 			isa = XCConfigurationList;
@@ -534,6 +553,7 @@
 				C56E79FC196E0E8100018052 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

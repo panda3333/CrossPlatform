@@ -35,14 +35,7 @@
     PFUser *currentUser = [PFUser currentUser];
     
     //user logged in
-    if (currentUser) {
-        
-        //if user is logged in then show the main view controller.
-        UIViewController *controller = [self.storyboard instantiateViewControllerWithIdentifier:@"MainViewController"];
-        [self.navigationController pushViewController:controller animated:true];
-    
-    //user not logged in
-    } else {
+    if (!currentUser) {
         // Create the log in view controller
         PFLogInViewController *logInViewController = [[PFLogInViewController alloc] init];
         [logInViewController setDelegate:self]; // Set ourselves as the delegate
@@ -87,4 +80,12 @@
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
+- (IBAction)logoutButton:(id)sender
+{
+    [PFUser logOut];
+    PFUser *currentUser = [PFUser currentUser];
+    
+    [self viewDidAppear:true];
+    
+}
 @end

@@ -12,4 +12,6 @@
 
 @interface ViewController : UIViewController <PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate>
 
+- (IBAction)logoutButton:(id)sender;
+
 @end
