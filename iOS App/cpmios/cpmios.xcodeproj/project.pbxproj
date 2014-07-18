@@ -39,6 +39,9 @@
 		C56E7A16196E101900018052 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C56E7A15196E101900018052 /* StoreKit.framework */; };
 		C56E7A18196E102100018052 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C56E7A17196E102100018052 /* SystemConfiguration.framework */; };
 		C56E7A1B196E1BB400018052 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C56E7A1A196E1BB400018052 /* MainViewController.m */; };
+		C5E7DD29197894AD00EECCA3 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5E7DD28197894AD00EECCA3 /* DetailViewController.m */; };
+		C5E7DD2C1978992600EECCA3 /* EditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5E7DD2B1978992600EECCA3 /* EditViewController.m */; };
+		C5E7DD2F1978A34900EECCA3 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = C5E7DD2E1978A34900EECCA3 /* Reachability.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +96,12 @@
 		C56E7A17196E102100018052 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		C56E7A19196E1BB400018052 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		C56E7A1A196E1BB400018052 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		C5E7DD27197894AD00EECCA3 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
+		C5E7DD28197894AD00EECCA3 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		C5E7DD2A1978992600EECCA3 /* EditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditViewController.h; sourceTree = "<group>"; };
+		C5E7DD2B1978992600EECCA3 /* EditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditViewController.m; sourceTree = "<group>"; };
+		C5E7DD2D1978A34900EECCA3 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		C5E7DD2E1978A34900EECCA3 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,6 +189,8 @@
 		C56E79CE196E0E8100018052 /* cpmios */ = {
 			isa = PBXGroup;
 			children = (
+				C5E7DD2D1978A34900EECCA3 /* Reachability.h */,
+				C5E7DD2E1978A34900EECCA3 /* Reachability.m */,
 				C56E79D7196E0E8100018052 /* AppDelegate.h */,
 				C56E79D8196E0E8100018052 /* AppDelegate.m */,
 				C56E79DA196E0E8100018052 /* Main.storyboard */,
@@ -195,6 +206,10 @@
 				C568C1D719777221007CE149 /* TableViewController.m */,
 				C568C1D91977781F007CE149 /* AddContactViewController.h */,
 				C568C1DA1977781F007CE149 /* AddContactViewController.m */,
+				C5E7DD27197894AD00EECCA3 /* DetailViewController.h */,
+				C5E7DD28197894AD00EECCA3 /* DetailViewController.m */,
+				C5E7DD2A1978992600EECCA3 /* EditViewController.h */,
+				C5E7DD2B1978992600EECCA3 /* EditViewController.m */,
 			);
 			path = cpmios;
 			sourceTree = "<group>";
@@ -326,8 +341,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				C568C1DB1977781F007CE149 /* AddContactViewController.m in Sources */,
+				C5E7DD2C1978992600EECCA3 /* EditViewController.m in Sources */,
 				C56E79DF196E0E8100018052 /* ViewController.m in Sources */,
 				C568C1D819777221007CE149 /* TableViewController.m in Sources */,
+				C5E7DD2F1978A34900EECCA3 /* Reachability.m in Sources */,
+				C5E7DD29197894AD00EECCA3 /* DetailViewController.m in Sources */,
 				C56E79D9196E0E8100018052 /* AppDelegate.m in Sources */,
 				C56E79D5196E0E8100018052 /* main.m in Sources */,
 				C56E7A1B196E1BB400018052 /* MainViewController.m in Sources */,

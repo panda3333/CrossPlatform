@@ -1,21 +1,21 @@
 //
-//  AddContactViewController.m
+//  EditViewController.m
 //  cpmios
 //
-//  Created by Brandon Shega on 7/16/14.
+//  Created by Brandon Shega on 7/17/14.
 //  Copyright (c) 2014 Brandon Shega. All rights reserved.
 //
 
-#import "AddContactViewController.h"
+#import "EditViewController.h"
 #import "Reachability.h"
 
-@interface AddContactViewController ()
+@interface EditViewController ()
 
 @end
 
-@implementation AddContactViewController
+@implementation EditViewController
 
-@synthesize nameText, phoneText;
+@synthesize editObject, nameField, phoneField;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -32,10 +32,31 @@
     // Do any additional setup after loading the view.
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    nameField.text = editObject[@"name"];
+    NSNumber *phoneNumber = editObject[@"phone"];
+    NSString *phoneString = [phoneNumber stringValue];
+    phoneField.text = phoneString;
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    
+    UITouch *touch = [[event allTouches] anyObject];
+    if ([nameField isFirstResponder] && [touch view] != nameField) {
+        [nameField resignFirstResponder];
+    } else if ([phoneField isFirstResponder] && [touch view] != phoneField) {
+        [phoneField resignFirstResponder];
+    }
+    [super touchesBegan:touches withEvent:event];
 }
 
 /*
@@ -49,22 +70,11 @@
 }
 */
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    
-    UITouch *touch = [[event allTouches] anyObject];
-    if ([nameText isFirstResponder] && [touch view] != nameText) {
-        [nameText resignFirstResponder];
-    } else if ([phoneText isFirstResponder] && [touch view] != phoneText) {
-        [phoneText resignFirstResponder];
-    }
-    [super touchesBegan:touches withEvent:event];
-}
-
-- (IBAction)addContactButton:(id)sender
+- (IBAction)updateButton:(id)sender
 {
     
-    [nameText resignFirstResponder];
-    [phoneText resignFirstResponder];
+    [nameField resignFirstResponder];
+    [phoneField resignFirstResponder];
     
     Reachability *networkReachability = [Reachability reachabilityForInternetConnection];
     NetworkStatus networkStatus = [networkReachability currentReachabilityStatus];
@@ -77,9 +87,9 @@
         
         [self.navigationController popToRootViewControllerAnimated:true];
     } else {
-        
+    
         //Validation
-        if ([[nameText text]  isEqual: @""] || [[phoneText text]  isEqual: @""]) {
+        if ([[nameField text]  isEqual: @""] || [[phoneField text]  isEqual: @""]) {
             
             [[[UIAlertView alloc] initWithTitle:@"Error!"
                                         message:@"Please complete all fields"
@@ -87,8 +97,8 @@
                               cancelButtonTitle:@"OK"
                               otherButtonTitles:nil] show];
             
-        } else if ([[phoneText text] length] > 10 || [[phoneText text] length] < 10) {
-            
+        } else if ([[phoneField text] length] > 10 || [[phoneField text] length] < 10) {
+        
             [[[UIAlertView alloc] initWithTitle:@"Error!"
                                         message:@"Phone Number must be 10 digits."
                                        delegate:nil
@@ -97,32 +107,21 @@
             
         } else {
         
-            PFObject *contact = [PFObject objectWithClassName:@"Contact"];
-            
-            contact[@"name"] = [nameText text];
-            NSInteger phoneInt = [[phoneText text] integerValue];
+            editObject[@"name"] = [nameField text];
+            NSInteger phoneInt = [[phoneField text] integerValue];
             NSNumber *phoneNumber = [NSNumber numberWithInt:phoneInt];
-            contact[@"phone"] = phoneNumber;
-            contact[@"user"] = [PFUser currentUser];
+            editObject[@"phone"] = phoneNumber;
             
-            [contact saveInBackground];
-            
-            [self dismissViewControllerAnimated:true completion:nil];
+            [editObject saveInBackground];
+            [self.navigationController popViewControllerAnimated:true];
             
             [[[UIAlertView alloc] initWithTitle:@"Success!"
-                                        message:@"Contact Added Successfully."
+                                        message:@"Contact Updated Successfully."
                                        delegate:nil
                               cancelButtonTitle:@"OK"
                               otherButtonTitles:nil] show];
+            
         }
     }
-    
-}
-
-- (IBAction)cancelButton:(id)sender
-{
-    
-    [self dismissViewControllerAnimated:true completion:nil];
-    
 }
 @end

@@ -64,7 +64,7 @@
         <scene sceneID="ESb-S0-p9r">
             <objects>
                 <tableViewController id="qqe-nf-3Wd" customClass="TableViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="55" sectionHeaderHeight="22" sectionFooterHeight="22" id="20L-IY-5WA">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="55" sectionHeaderHeight="22" sectionFooterHeight="22" id="20L-IY-5WA">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -94,7 +94,7 @@
                                 <connections>
                                     <outlet property="nameLabel" destination="rSX-7c-6HH" id="NxK-fm-5Af"/>
                                     <outlet property="phoneLabel" destination="aa8-HL-VMz" id="vll-0Y-Qf7"/>
-                                    <segue destination="64i-tD-3zM" kind="push" id="07g-9o-IOZ"/>
+                                    <segue destination="64i-tD-3zM" kind="push" identifier="detailSegue" id="07g-9o-IOZ"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -118,10 +118,10 @@
             </objects>
             <point key="canvasLocation" x="346" y="259"/>
         </scene>
-        <!--View Controller - Contact-->
+        <!--Detail View Controller - Contact-->
         <scene sceneID="zgi-4U-3R1">
             <objects>
-                <viewController id="64i-tD-3zM" sceneMemberID="viewController">
+                <viewController id="64i-tD-3zM" customClass="DetailViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="TEz-hz-Fu0"/>
                         <viewControllerLayoutGuide type="bottom" id="z5U-3u-UZ0"/>
@@ -129,13 +129,97 @@
                     <view key="view" contentMode="scaleToFill" id="hzC-FV-wnf">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yPh-Yg-WT7">
+                                <rect key="frame" x="20" y="147" width="51" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Phone Number:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ogj-57-XFm">
+                                <rect key="frame" x="20" y="204" width="121" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LMf-GL-zey">
+                                <rect key="frame" x="79" y="147" width="206" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Phone Number" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BGb-2f-tMa">
+                                <rect key="frame" x="149" y="204" width="151" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Contact" id="Cb6-Ll-4lZ"/>
+                    <navigationItem key="navigationItem" title="Contact" id="Cb6-Ll-4lZ">
+                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="V93-dU-rch">
+                            <connections>
+                                <segue destination="cOn-cN-9LI" kind="push" identifier="editSegue" id="gw4-gB-sVi"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="nameText" destination="LMf-GL-zey" id="FE0-di-c0f"/>
+                        <outlet property="numberText" destination="BGb-2f-tMa" id="p9z-XM-2Ho"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Y5a-mT-cPV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="855" y="98"/>
+        </scene>
+        <!--Edit View Controller - Edit Contact-->
+        <scene sceneID="kcp-bM-9z3">
+            <objects>
+                <viewController id="cOn-cN-9LI" customClass="EditViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="VGp-Jx-zqw"/>
+                        <viewControllerLayoutGuide type="bottom" id="YB5-EA-ctw"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="gQ8-0l-BZR">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="4PV-Xs-I11">
+                                <rect key="frame" x="81" y="167" width="159" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="2Tf-tW-Gtl">
+                                <rect key="frame" x="81" y="291" width="159" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" keyboardType="phonePad"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pcK-aK-1wT">
+                                <rect key="frame" x="105" y="381" width="110" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Update Contact">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="updateButton:" destination="cOn-cN-9LI" eventType="touchUpInside" id="D6O-7T-zbP"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Edit Contact" id="D17-dU-Sji"/>
+                    <connections>
+                        <outlet property="nameField" destination="4PV-Xs-I11" id="9Ci-xk-E1E"/>
+                        <outlet property="phoneField" destination="2Tf-tW-Gtl" id="k8B-wp-K1f"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MBs-Nc-Evq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1282" y="98"/>
         </scene>
         <!--Add Contact View Controller - Add Contact-->
         <scene sceneID="9FD-6F-x85">
@@ -169,6 +253,16 @@
                                 </state>
                                 <connections>
                                     <action selector="addContactButton:" destination="G1i-ho-u8Y" eventType="touchUpInside" id="7Gq-1X-WgW"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gts-jx-X8y">
+                                <rect key="frame" x="137" y="296" width="48" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Cancel">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="cancelButton:" destination="G1i-ho-u8Y" eventType="touchUpInside" id="zwm-YP-0mG"/>
                                 </connections>
                             </button>
                         </subviews>

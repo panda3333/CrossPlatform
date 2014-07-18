@@ -15,5 +15,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *phoneText;
 
 - (IBAction)addContactButton:(id)sender;
+- (IBAction)cancelButton:(id)sender;
 
 @end

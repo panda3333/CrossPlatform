@@ -11,7 +11,7 @@
 
 @interface TableViewController : UITableViewController
 {
-    NSArray *contactList;
+    NSMutableArray *contactList;
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *myTableView;
