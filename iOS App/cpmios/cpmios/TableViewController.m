@@ -48,29 +48,63 @@
     if (networkStatus == NotReachable) {
         
         [[[UIAlertView alloc] initWithTitle:@"Error!"
-                                    message:@"No Internet Connection.\nPlease connect to the internet."
+                                    message:@"No Internet Connection.\nData will update when connection is restored."
                                    delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil] show];
         
-        [self.navigationController popToRootViewControllerAnimated:true];
+        NSUserDefaults *contacts = [NSUserDefaults standardUserDefaults];
+        NSArray *archive = [contacts objectForKey:@"contacts"];
+        
+        contactList = [[NSMutableArray alloc] init];
+        
+        for (NSData *archivedContact in archive) {
+            PFObject *contact = [NSKeyedUnarchiver unarchiveObjectWithData:archivedContact];
+            [contactList addObject:contact];
+        }
+        
+        [myTableView reloadData];
+        
+        //[self.navigationController popToRootViewControllerAnimated:true];
         
     } else {
-     
-        //queries parse to see if there is an object for the current user, if there is, display the information for the labels.
-        PFQuery *query = [PFQuery queryWithClassName:@"Contact"];
-        [query whereKey:@"user" equalTo:[PFUser currentUser]];
-        
-        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-            if (!error) {
-                contactList = [NSMutableArray arrayWithArray:objects];
-                [self.tableView reloadData];
-            } else {
-                NSLog(@"Error: %@", error);
-            }
-        }];
+    
+        [self queryData];
         
     }
+}
+
+- (void)queryData
+{
+    //queries parse to see if there is an object for the current user, if there is, display the information for the labels.
+    PFQuery *query = [PFQuery queryWithClassName:@"Contact"];
+    [query whereKey:@"user" equalTo:[PFUser currentUser]];
+    
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+            
+            NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:TRUE];
+            objects = [objects sortedArrayUsingDescriptors:[NSArray arrayWithObject:sort]];
+            
+            contactList = [NSMutableArray arrayWithArray:objects];
+            
+            NSUserDefaults *contacts = [NSUserDefaults standardUserDefaults];
+            
+            NSMutableArray *archiveArray = [NSMutableArray arrayWithCapacity:contactList.count];
+            
+            for (PFObject *contact in contactList) {
+                NSData *archivedContact = [NSKeyedArchiver archivedDataWithRootObject:contact];
+                [archiveArray addObject:archivedContact];
+            }
+            
+            [contacts setObject:archiveArray forKey:@"contacts"];
+            [contacts synchronize];
+            
+            [myTableView reloadData];
+        } else {
+            NSLog(@"Error: %@", error);
+        }
+    }];
     
 }
 
@@ -140,14 +174,43 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
+        
+        Reachability *networkReachability = [Reachability reachabilityForInternetConnection];
+        NetworkStatus networkStatus = [networkReachability currentReachabilityStatus];
+        
         //Remove object from Parse backend
         PFObject *object = [contactList objectAtIndex:indexPath.row];
-        [object deleteInBackground];
+        
         //remove object from array of queried objects
         [contactList removeObjectAtIndex:indexPath.row];
         
+        if (networkStatus != NotReachable) {
+            
+            [object deleteInBackground];
+            
+        } else {
+            
+            [object deleteEventually];
+            
+        }
+        
+        NSUserDefaults *contacts = [NSUserDefaults standardUserDefaults];
+        
+        NSMutableArray *archiveArray = [NSMutableArray arrayWithCapacity:contactList.count];
+        
+        for (PFObject *contact in contactList) {
+            NSData *archivedContact = [NSKeyedArchiver archivedDataWithRootObject:contact];
+            [archiveArray addObject:archivedContact];
+        }
+        
+        [contacts setObject:archiveArray forKey:@"contacts"];
+        [contacts synchronize];
+        
+        
+        
         // Delete the row from the data source
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        
     }
 }
 

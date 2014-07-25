@@ -78,35 +78,29 @@
     
     Reachability *networkReachability = [Reachability reachabilityForInternetConnection];
     NetworkStatus networkStatus = [networkReachability currentReachabilityStatus];
-    if (networkStatus == NotReachable) {
+    
+    
+    //Validation
+    if ([[nameField text]  isEqual: @""] || [[phoneField text]  isEqual: @""]) {
+        
         [[[UIAlertView alloc] initWithTitle:@"Error!"
-                                    message:@"No Internet Connection.\nPlease connect to the internet."
+                                    message:@"Please complete all fields"
                                    delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil] show];
         
-        [self.navigationController popToRootViewControllerAnimated:true];
-    } else {
+    } else if ([[phoneField text] length] > 10 || [[phoneField text] length] < 10) {
     
-        //Validation
-        if ([[nameField text]  isEqual: @""] || [[phoneField text]  isEqual: @""]) {
-            
-            [[[UIAlertView alloc] initWithTitle:@"Error!"
-                                        message:@"Please complete all fields"
-                                       delegate:nil
-                              cancelButtonTitle:@"OK"
-                              otherButtonTitles:nil] show];
-            
-        } else if ([[phoneField text] length] > 10 || [[phoneField text] length] < 10) {
+        [[[UIAlertView alloc] initWithTitle:@"Error!"
+                                    message:@"Phone Number must be 10 digits."
+                                   delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil] show];
         
-            [[[UIAlertView alloc] initWithTitle:@"Error!"
-                                        message:@"Phone Number must be 10 digits."
-                                       delegate:nil
-                              cancelButtonTitle:@"OK"
-                              otherButtonTitles:nil] show];
-            
-        } else {
+    } else {
         
+        if (networkStatus != NotReachable) {
+            
             editObject[@"name"] = [nameField text];
             NSInteger phoneInt = [[phoneField text] integerValue];
             NSNumber *phoneNumber = [NSNumber numberWithInt:phoneInt];
@@ -117,6 +111,72 @@
             
             [[[UIAlertView alloc] initWithTitle:@"Success!"
                                         message:@"Contact Updated Successfully."
+                                       delegate:nil
+                              cancelButtonTitle:@"OK"
+                              otherButtonTitles:nil] show];
+        } else {
+            
+            NSLog(@"%@", editObject[@"name"]);
+            
+            NSMutableArray *contactList = [[NSMutableArray alloc] init];
+            
+            NSUserDefaults *contacts = [NSUserDefaults standardUserDefaults];
+            
+            NSArray *archive = [contacts objectForKey:@"contacts"];
+            
+            for (NSData *archivedContact in archive) {
+                
+                PFObject *object = [NSKeyedUnarchiver unarchiveObjectWithData:archivedContact];
+                
+                [contactList addObject:object];
+                
+            }
+            
+            int index = 0;
+            int arrayIndex = 0;
+            
+            for (PFObject *contact in contactList) {
+                
+                if ([contact[@"name"] isEqualToString:editObject[@"name"]]) {
+                    
+                    editObject[@"name"] = [nameField text];
+                    NSInteger phoneInt = [[phoneField text] integerValue];
+                    NSNumber *phoneNumber = [NSNumber numberWithInt:phoneInt];
+                    editObject[@"phone"] = phoneNumber;
+                    
+                    arrayIndex = index;
+                }
+                
+                index++;
+                
+            }
+            
+            [contactList replaceObjectAtIndex:arrayIndex withObject:editObject];
+            
+            NSMutableArray *archiveArray = [NSMutableArray arrayWithCapacity:contactList.count];
+            
+            for (PFObject *contact in contactList) {
+                NSData *archivedContact = [NSKeyedArchiver archivedDataWithRootObject:contact];
+                [archiveArray addObject:archivedContact];
+            }
+            
+            NSLog(@"%@", editObject);
+            
+            PFObject *tempObject = [PFObject objectWithClassName:@"Contact"];
+            tempObject.objectId = editObject.objectId;
+            tempObject[@"name"] = editObject[@"name"];
+            tempObject[@"phone"] = editObject[@"phone"];
+            tempObject[@"user"] = editObject[@"user"];
+            
+            [tempObject saveEventually];
+            
+            [contacts setObject:archiveArray forKey:@"contacts"];
+            [contacts synchronize];
+            
+            [self.navigationController popViewControllerAnimated:true];
+            
+            [[[UIAlertView alloc] initWithTitle:@"Pending"
+                                        message:@"Connection not found, contact will be updated when connection is restored."
                                        delegate:nil
                               cancelButtonTitle:@"OK"
                               otherButtonTitles:nil] show];

@@ -16,4 +16,6 @@
 
 @property (strong, nonatomic) IBOutlet UITableView *myTableView;
 
+- (void)queryData;
+
 @end

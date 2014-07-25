@@ -38,24 +38,24 @@
     
     [super viewDidAppear:animated];
     
-    Reachability *networkReachability = [Reachability reachabilityForInternetConnection];
-    NetworkStatus networkStatus = [networkReachability currentReachabilityStatus];
-    if (networkStatus == NotReachable) {
-        [[[UIAlertView alloc] initWithTitle:@"Error!"
-                                    message:@"No Internet Connection.\nPlease connect to the internet."
-                                   delegate:nil
-                          cancelButtonTitle:@"OK"
-                          otherButtonTitles:nil] show];
-        
-        [self.navigationController popToRootViewControllerAnimated:true];
-    } else {
+//    Reachability *networkReachability = [Reachability reachabilityForInternetConnection];
+//    NetworkStatus networkStatus = [networkReachability currentReachabilityStatus];
+//    if (networkStatus == NotReachable) {
+//        [[[UIAlertView alloc] initWithTitle:@"Error!"
+//                                    message:@"No Internet Connection.\nPlease connect to the internet."
+//                                   delegate:nil
+//                          cancelButtonTitle:@"OK"
+//                          otherButtonTitles:nil] show];
+//        
+//        [self.navigationController popToRootViewControllerAnimated:true];
+//    } else {
     
         nameText.text = currentObject[@"name"];
         NSNumber *phoneNumber = currentObject[@"phone"];
         NSString *phoneString = [phoneNumber stringValue];
         numberText.text = phoneString;
         
-    }
+   // }
     
 }
 

@@ -68,42 +68,35 @@
     
     Reachability *networkReachability = [Reachability reachabilityForInternetConnection];
     NetworkStatus networkStatus = [networkReachability currentReachabilityStatus];
-    if (networkStatus == NotReachable) {
+    
+        
+    //Validation
+    if ([[nameText text]  isEqual: @""] || [[phoneText text]  isEqual: @""]) {
+        
         [[[UIAlertView alloc] initWithTitle:@"Error!"
-                                    message:@"No Internet Connection.\nPlease connect to the internet."
+                                    message:@"Please complete all fields"
                                    delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil] show];
         
-        [self.navigationController popToRootViewControllerAnimated:true];
+    } else if ([[phoneText text] length] > 10 || [[phoneText text] length] < 10) {
+        
+        [[[UIAlertView alloc] initWithTitle:@"Error!"
+                                    message:@"Phone Number must be 10 digits."
+                                   delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil] show];
     } else {
         
-        //Validation
-        if ([[nameText text]  isEqual: @""] || [[phoneText text]  isEqual: @""]) {
-            
-            [[[UIAlertView alloc] initWithTitle:@"Error!"
-                                        message:@"Please complete all fields"
-                                       delegate:nil
-                              cancelButtonTitle:@"OK"
-                              otherButtonTitles:nil] show];
-            
-        } else if ([[phoneText text] length] > 10 || [[phoneText text] length] < 10) {
-            
-            [[[UIAlertView alloc] initWithTitle:@"Error!"
-                                        message:@"Phone Number must be 10 digits."
-                                       delegate:nil
-                              cancelButtonTitle:@"OK"
-                              otherButtonTitles:nil] show];
-            
-        } else {
+        PFObject *contact = [PFObject objectWithClassName:@"Contact"];
         
-            PFObject *contact = [PFObject objectWithClassName:@"Contact"];
-            
-            contact[@"name"] = [nameText text];
-            NSInteger phoneInt = [[phoneText text] integerValue];
-            NSNumber *phoneNumber = [NSNumber numberWithInt:phoneInt];
-            contact[@"phone"] = phoneNumber;
-            contact[@"user"] = [PFUser currentUser];
+        contact[@"name"] = [nameText text];
+        NSInteger phoneInt = [[phoneText text] integerValue];
+        NSNumber *phoneNumber = [NSNumber numberWithInt:phoneInt];
+        contact[@"phone"] = phoneNumber;
+        contact[@"user"] = [PFUser currentUser];
+        
+        if (networkStatus == ReachableViaWiFi || networkStatus == ReachableViaWWAN) {
             
             [contact saveInBackground];
             
@@ -114,7 +107,44 @@
                                        delegate:nil
                               cancelButtonTitle:@"OK"
                               otherButtonTitles:nil] show];
+            
+        } else {
+            
+            [contact saveEventually];
+            
+            NSMutableArray *contactList = [[NSMutableArray alloc] init];
+            
+            NSUserDefaults *contacts = [NSUserDefaults standardUserDefaults];
+            
+            NSArray *archive = [contacts objectForKey:@"contacts"];
+            
+            for (NSData *archivedContact in archive) {
+                PFObject *object = [NSKeyedUnarchiver unarchiveObjectWithData:archivedContact];
+                [contactList addObject:object];
+            }
+            
+            [contactList addObject:contact];
+            
+            NSMutableArray *archiveArray = [NSMutableArray arrayWithCapacity:contactList.count];
+            
+            for (PFObject *contact in contactList) {
+                NSData *archivedContact = [NSKeyedArchiver archivedDataWithRootObject:contact];
+                [archiveArray addObject:archivedContact];
+            }
+            
+            [contacts setObject:archiveArray forKey:@"contacts"];
+            [contacts synchronize];
+            
+            [self dismissViewControllerAnimated:true completion:nil];
+            
+            [[[UIAlertView alloc] initWithTitle:@"Pending"
+                                        message:@"Connection not found, contact will be added when connection is restored."
+                                       delegate:nil
+                              cancelButtonTitle:@"OK"
+                              otherButtonTitles:nil] show];
+            
         }
+            
     }
     
 }
