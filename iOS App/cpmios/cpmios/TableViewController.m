@@ -68,6 +68,8 @@
         //[self.navigationController popToRootViewControllerAnimated:true];
         
     } else {
+        
+        NSTimer *queryTimer = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(queryData) userInfo:nil repeats:TRUE];
     
         [self queryData];
         
