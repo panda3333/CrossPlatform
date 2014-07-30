@@ -1,24 +1,44 @@
 package com.fullsail.cmpandroid;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import com.fullsail.cmpandroid.R;
+import android.widget.Toast;
 
-public class MainActivity extends Activity {
+import com.fullsail.cmpandroid.R;
+import com.parse.Parse;
+import com.parse.ParseUser;
+
+public class LoginCheckActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login_check);
+
+        Parse.initialize(this, "g8RjRSmxpeLg7W00hFFB1BfrlQNdwEJHiVzrN8s3", "xnRpFrD4ik083GScDy9FHRMQpaRgIdKLdBuReK1Z");
+        ParseUser.logOut();
+        ParseUser currentUser = ParseUser.getCurrentUser();
+
+        if (ParseUser.getCurrentUser() != null) {
+
+            Toast.makeText(this, "You are logged in already!", Toast.LENGTH_SHORT).show();
+
+        } else {
+
+            startActivity(new Intent(this, LoginActivity.class));
+
+        }
+
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.login_check, menu);
         return true;
     }
 
