@@ -32,6 +32,18 @@
             android:name=".ContactsActiviity"
             android:label="@string/title_activity_contacts_activiity" >
         </activity>
+        <activity
+            android:name=".AddContactActivity"
+            android:label="@string/title_activity_add_contact" >
+        </activity>
+        <activity
+            android:name=".DetailActivity"
+            android:label="@string/title_activity_detail" >
+        </activity>
+        <activity
+            android:name=".EditContactActivity"
+            android:label="@string/title_activity_edit_contact" >
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

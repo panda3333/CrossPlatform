@@ -18,8 +18,8 @@ public class LoginCheckActivity extends Activity {
         setContentView(R.layout.activity_login_check);
 
         Parse.initialize(this, "g8RjRSmxpeLg7W00hFFB1BfrlQNdwEJHiVzrN8s3", "xnRpFrD4ik083GScDy9FHRMQpaRgIdKLdBuReK1Z");
-        ParseUser.logOut();
-        ParseUser currentUser = ParseUser.getCurrentUser();
+        //ParseUser.logOut();
+        //ParseUser currentUser = ParseUser.getCurrentUser();
 
         if (ParseUser.getCurrentUser() != null) {
 

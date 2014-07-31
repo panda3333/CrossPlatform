@@ -8,5 +8,8 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_register">RegisterActivity</string>
     <string name="title_activity_contacts_activiity">ContactsActiviity</string>
+    <string name="title_activity_add_contact">AddContactActivity</string>
+    <string name="title_activity_detail">DetailActivity</string>
+    <string name="title_activity_edit_contact">EditContactActivity</string>
 
 </resources>

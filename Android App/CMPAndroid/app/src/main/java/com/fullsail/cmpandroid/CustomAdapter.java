@@ -34,7 +34,8 @@ public class CustomAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return position;
+
+        return contactList.get(position);
     }
 
     @Override
@@ -53,15 +54,16 @@ public class CustomAdapter extends BaseAdapter {
             TextView name = (TextView) v.findViewById(R.id.contactText);
             TextView phone = (TextView) v.findViewById(R.id.phoneText);
 
-            HashMap<String,String> contact;
+            HashMap<String, String> contact;
             contact = contactList.get(position);
 
             name.setText(contact.get("name"));
             phone.setText(contact.get("phone"));
 
-            return v;
-
         }
+
+        return v;
+
     }
 
 }
