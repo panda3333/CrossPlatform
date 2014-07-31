@@ -1,7 +1,9 @@
 package com.fullsail.cmpandroid;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,11 +49,19 @@ public class LoginActivity extends Activity {
                 String usernameString = username.getText().toString();
                 String passwordString = password.getText().toString();
 
+                final ProgressDialog dlg = new ProgressDialog(mContext);
+                dlg.setTitle("Please Wait.");
+                dlg.setMessage("Logging in. Please Wait...");
+                dlg.show();
+
                 ParseUser.logInInBackground(usernameString, passwordString, new LogInCallback() {
                     @Override
                     public void done(ParseUser parseUser, com.parse.ParseException e) {
+                        dlg.dismiss();
                         if (parseUser != null) {
-                            Toast.makeText(mContext, "Logged In Successfully!", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(mContext, MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
                         } else {
                             Toast.makeText(mContext, "Sorry, your username and password do not match.  Please try again.", Toast.LENGTH_SHORT).show();
                         }
@@ -63,7 +73,7 @@ public class LoginActivity extends Activity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(mContext, RegisterActivity.class));
             }
         });
 

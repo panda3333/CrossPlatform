@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.fullsail.cmpandroid.R;
 import com.parse.Parse;
 import com.parse.ParseUser;
 
@@ -24,7 +23,7 @@ public class LoginCheckActivity extends Activity {
 
         if (ParseUser.getCurrentUser() != null) {
 
-            Toast.makeText(this, "You are logged in already!", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, MainActivity.class));
 
         } else {
 

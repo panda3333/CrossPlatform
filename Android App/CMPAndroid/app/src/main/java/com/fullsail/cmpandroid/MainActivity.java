@@ -1,17 +1,52 @@
 package com.fullsail.cmpandroid;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+
 import com.fullsail.cmpandroid.R;
+import com.parse.ParseUser;
 
 public class MainActivity extends Activity {
+
+    Context mContext;
+
+    Button contactsButton;
+    Button logoutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mContext = this;
+
+        contactsButton = (Button) findViewById(R.id.contactButton);
+        logoutButton = (Button) findViewById(R.id.logoutButton);
+
+        contactsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ParseUser.logOut();
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                Intent intent = new Intent(mContext, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
+
     }
 
 
