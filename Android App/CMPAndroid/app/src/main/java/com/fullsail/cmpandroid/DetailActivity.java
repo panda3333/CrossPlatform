@@ -20,7 +20,7 @@ public class DetailActivity extends Activity {
 
     String name;
     String phone;
-    String id;
+    String objectid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +38,7 @@ public class DetailActivity extends Activity {
 
             name = extras.getString("name");
             phone = extras.getString("phone");
-            id = extras.getString("id");
+            objectid = extras.getString("id");
 
         }
 
@@ -67,11 +67,28 @@ public class DetailActivity extends Activity {
                 Intent intent = new Intent(mContext, EditContactActivity.class);
                 intent.putExtra("name", name);
                 intent.putExtra("phone", phone);
-                intent.putExtra("id", id);
-                startActivity(intent);
+                intent.putExtra("id", objectid);
+                startActivityForResult(intent, 1);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+
+            if (resultCode == RESULT_OK) {
+
+                String name = data.getStringExtra("name");
+                String phone = data.getStringExtra("phone");
+
+                nameText.setText(name);
+                phoneText.setText(phone);
+
+            }
+
         }
     }
 }

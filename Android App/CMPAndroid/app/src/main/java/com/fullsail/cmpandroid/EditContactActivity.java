@@ -2,12 +2,15 @@ package com.fullsail.cmpandroid;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.fullsail.cmpandroid.R;
 import com.parse.GetCallback;
@@ -61,10 +64,23 @@ public class EditContactActivity extends Activity {
                     public void done(ParseObject parseObject, ParseException e) {
                         if (e == null) {
 
+                            Number phoneNumber = Integer.valueOf(editPhone.getText().toString());
+
                             parseObject.put("name", editName.getText().toString());
-                            parseObject.put("phone", editPhone.getText().toString());
+                            parseObject.put("phone", phoneNumber);
 
                             parseObject.saveInBackground();
+
+                            Toast.makeText(mContext, "Contact updated successfully.", Toast.LENGTH_SHORT).show();
+                            ContactsActiviity.refreshData();
+
+                            Intent returnIntent = new Intent();
+
+                            returnIntent.putExtra("name", editName.getText().toString());
+                            returnIntent.putExtra("phone", editPhone.getText().toString());
+                            setResult(RESULT_OK, returnIntent);
+
+                            finish();
 
                         }
                     }
