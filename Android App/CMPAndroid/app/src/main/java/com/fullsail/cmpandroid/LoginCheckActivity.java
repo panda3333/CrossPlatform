@@ -17,6 +17,7 @@ public class LoginCheckActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_check);
 
+        Parse.enableLocalDatastore(this);
         Parse.initialize(this, "g8RjRSmxpeLg7W00hFFB1BfrlQNdwEJHiVzrN8s3", "xnRpFrD4ik083GScDy9FHRMQpaRgIdKLdBuReK1Z");
         //ParseUser.logOut();
         //ParseUser currentUser = ParseUser.getCurrentUser();

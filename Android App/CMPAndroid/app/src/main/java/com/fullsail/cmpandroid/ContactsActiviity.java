@@ -1,9 +1,13 @@
 package com.fullsail.cmpandroid;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -12,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.fullsail.cmpandroid.R;
 import com.parse.FindCallback;
@@ -32,6 +37,8 @@ public class ContactsActiviity extends Activity {
     static CustomAdapter adapter;
 
     static Context mContext;
+
+    static List<ParseObject> objectList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +70,16 @@ public class ContactsActiviity extends Activity {
 
                 startActivity(intent);
 
+            }
+        });
+
+        contacts.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                deleteItem(position);
+
+                return true;
             }
         });
 
@@ -108,37 +125,147 @@ public class ContactsActiviity extends Activity {
         dlg.setMessage("Loading contacts. Please Wait...");
         dlg.show();
 
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> parseObjects, ParseException e) {
-                if (e == null) {
+        boolean connected = networkConnected();
 
-                    contactList.clear();
+        if (connected) {
 
-                    for (ParseObject object : parseObjects) {
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> parseObjects, ParseException e) {
+                    if (e == null) {
 
-                        HashMap<String, String> contact = new HashMap<String, String>();
+                        contactList.clear();
 
-                        contact.put("name", object.getString("name"));
-                        contact.put("phone", object.getNumber("phone").toString());
-                        contact.put("id", object.getObjectId());
+                        objectList = parseObjects;
 
-                        contactList.add(contact);
+                        ParseObject.pinAllInBackground(parseObjects);
+
+                        for (ParseObject object : parseObjects) {
+
+                            HashMap<String, String> contact = new HashMap<String, String>();
+
+                            contact.put("name", object.getString("name"));
+                            contact.put("phone", object.getNumber("phone").toString());
+                            contact.put("id", object.getObjectId());
+
+                            contactList.add(contact);
+
+                        }
+
+                        dlg.dismiss();
+
+                        contacts.setAdapter(adapter);
+                        contacts.deferNotifyDataSetChanged();
+
+                    } else {
+
+                        Log.e("query", "Error: " + e.getMessage());
 
                     }
+                }
+            });
 
-                    dlg.dismiss();
+        } else {
 
-                    contacts.setAdapter(adapter);
-                    contacts.deferNotifyDataSetChanged();
+            query.fromLocalDatastore();
+
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> parseObjects, ParseException e) {
+                    if (e == null) {
+
+                        contactList.clear();
+
+                        for (ParseObject object : parseObjects) {
+
+                            HashMap<String, String> contact = new HashMap<String, String>();
+
+                            contact.put("name", object.getString("name"));
+                            contact.put("phone", object.getNumber("phone").toString());
+                            contact.put("id", object.getObjectId());
+
+                            contactList.add(contact);
+
+                        }
+
+                        dlg.dismiss();
+
+                        contacts.setAdapter(adapter);
+                        contacts.deferNotifyDataSetChanged();
+
+                    } else {
+
+                        Log.e("query", "Error: " + e.getMessage());
+
+                    }
+                }
+            });
+
+
+
+        }
+
+
+
+    }
+
+
+    public void deleteItem(final int position) {
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+
+        alert.setTitle("Delete Contact");
+        alert.setMessage("Do you want to delete this contact?");
+        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                ParseObject object = objectList.get(position);
+
+                if (ContactsActiviity.networkConnected()) {
+
+                    object.deleteInBackground();
 
                 } else {
 
-                    Log.e("query", "Error: " + e.getMessage());
+                    object.deleteEventually();
 
                 }
+
+                Toast.makeText(mContext, "Contact deleted successfully.", Toast.LENGTH_SHORT).show();
+                refreshData();
+
+                dialog.dismiss();
+
+            }
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+
             }
         });
+
+        alert.show();
+
+
+    }
+
+    public static boolean networkConnected() {
+
+        ConnectivityManager manager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = manager.getActiveNetworkInfo();
+
+        if (info == null) {
+
+            return false;
+
+        } else {
+
+            return true;
+
+        }
 
     }
 }

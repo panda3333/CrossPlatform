@@ -49,7 +49,15 @@ public class AddContactActivity extends Activity {
                 contact.put("phone", phoneNumber);
                 contact.put("user", ParseUser.getCurrentUser());
 
-                contact.saveInBackground();
+                if (ContactsActiviity.networkConnected()) {
+
+                    contact.saveInBackground();
+
+                } else {
+
+                    contact.saveEventually();
+
+                }
 
                 ContactsActiviity.refreshData();
 

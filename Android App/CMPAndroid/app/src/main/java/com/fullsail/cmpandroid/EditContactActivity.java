@@ -59,32 +59,69 @@ public class EditContactActivity extends Activity {
 
                 ParseQuery<ParseObject> query = ParseQuery.getQuery("Contact");
 
-                query.getInBackground(id, new GetCallback<ParseObject>() {
-                    @Override
-                    public void done(ParseObject parseObject, ParseException e) {
-                        if (e == null) {
+                if (ContactsActiviity.networkConnected()) {
 
-                            Number phoneNumber = Integer.valueOf(editPhone.getText().toString());
+                    query.getInBackground(id, new GetCallback<ParseObject>() {
+                        @Override
+                        public void done(ParseObject parseObject, ParseException e) {
+                            if (e == null) {
 
-                            parseObject.put("name", editName.getText().toString());
-                            parseObject.put("phone", phoneNumber);
+                                Number phoneNumber = Integer.valueOf(editPhone.getText().toString());
 
-                            parseObject.saveInBackground();
+                                parseObject.put("name", editName.getText().toString());
+                                parseObject.put("phone", phoneNumber);
 
-                            Toast.makeText(mContext, "Contact updated successfully.", Toast.LENGTH_SHORT).show();
-                            ContactsActiviity.refreshData();
+                                parseObject.saveInBackground();
 
-                            Intent returnIntent = new Intent();
+                                Toast.makeText(mContext, "Contact updated successfully.", Toast.LENGTH_SHORT).show();
+                                ContactsActiviity.refreshData();
 
-                            returnIntent.putExtra("name", editName.getText().toString());
-                            returnIntent.putExtra("phone", editPhone.getText().toString());
-                            setResult(RESULT_OK, returnIntent);
+                                Intent returnIntent = new Intent();
 
-                            finish();
+                                returnIntent.putExtra("name", editName.getText().toString());
+                                returnIntent.putExtra("phone", editPhone.getText().toString());
+                                setResult(RESULT_OK, returnIntent);
 
+                                finish();
+
+                            }
                         }
-                    }
-                });
+                    });
+
+                } else {
+
+                    query.fromLocalDatastore();
+
+                    query.getInBackground(id, new GetCallback<ParseObject>() {
+                        @Override
+                        public void done(ParseObject parseObject, ParseException e) {
+                            if (e == null) {
+
+                                Number phoneNumber = Integer.valueOf(editPhone.getText().toString());
+
+                                parseObject.put("name", editName.getText().toString());
+                                parseObject.put("phone", phoneNumber);
+
+                                parseObject.saveEventually();
+
+                                Toast.makeText(mContext, "Contact updated successfully.", Toast.LENGTH_SHORT).show();
+                                ContactsActiviity.refreshData();
+
+                                Intent returnIntent = new Intent();
+
+                                returnIntent.putExtra("name", editName.getText().toString());
+                                returnIntent.putExtra("phone", editPhone.getText().toString());
+                                setResult(RESULT_OK, returnIntent);
+
+                                finish();
+
+                            }
+                        }
+                    });
+
+                }
+
+
 
             }
         });
